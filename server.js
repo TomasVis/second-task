@@ -1,9 +1,17 @@
 const express = require('express');
 const app = express();
 const fs = require('fs');
+const bodyParser = require('body-parser')
+
 
 const PORT = 3212;
 const FILE = './feedbacks.json';
+
+app.use('/', express.static('public'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+/*app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())*/
 
 app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
@@ -23,11 +31,10 @@ async function readFromFile() {
    return comments;
 }
 
-app.use('/', express.static('public'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
 
 app.post('/feedbacks', async function(req, res) {
+  console.log(req.body)
    await writeToFile(req.body);
        res.json({
            success: true,
