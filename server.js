@@ -7,15 +7,15 @@ const bodyParser = require('body-parser')
 const PORT = 3212;
 const FILE = './feedbacks.json';
 
-app.use('/', express.static('public'));
+//app.use('/', express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 /*app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())*/
 
-app.get("/", function (req, res) {
+/*app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
-});
+});*/
 
 async function writeToFile(body) {
    const comments = await readFromFile();
@@ -49,6 +49,22 @@ app.get('/feedbacks', async function(req, res) {
    });
 });
 
+app.get("/api/timestamp/:date_string?", function (req, res) {
+
+  var date = 0;
+  if(req.params.date_string == undefined){
+    date = new Date()
+  }
+  else if(isNaN(req.params.date_string)){
+    date = new Date( Date.parse(req.params.date_string));
+  }
+  else if (!isNaN(req.params.date_string)){
+    date = new Date(Number(req.params.date_string))
+  }
+ 
+  res.send({"unix": date.getTime(), "utc" : date.toUTCString() })
+});
+// Shows that back end is connected
 app.get('/express_backend', (req, res) => {
   res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
 });
