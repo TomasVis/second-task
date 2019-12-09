@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 const bodyParser = require('body-parser')
+const url = require('url');
+const querystring = require('querystring');
 
 
 const PORT = 3212;
@@ -34,7 +36,7 @@ async function readFromFile() {
 
 
 app.post('/feedbacks', async function(req, res) {
-  console.log(req.body)
+  //console.log(req.body)
    await writeToFile(req.body);
        res.json({
            success: true,
@@ -42,11 +44,81 @@ app.post('/feedbacks', async function(req, res) {
        });
 });
 
-app.get('/feedbacks', async function(req, res) {
-   res.json({
+
+let funk =  (a,b) => {
+  let cont = false;
+  for (let prop in a) {
+  
+ if(a[prop].toLowerCase().indexOf(b.toLowerCase()) !== -1) cont = true
+    //console.log(el.values[prop] )
+}
+ return  cont ;
+
+}
+//console.log(funk(arr.values,"bab"))
+const filterItems = (arr, query) => {
+  return arr.filter(el => funk(el.values,query));
+};
+
+
+
+
+
+
+
+
+app.get('/feedbacks?', async function(req, res) {
+  //console.log(req.query)
+  let file = await readFromFile()
+  //console.log(file)
+  if(req.query.length<1){
+         console.log("ner komentaru")
+      res.json({
+       success: true,
+       body: "komentaru nebuvo rasta"
+   });
+  }
+  else if(req.query.searchText !== undefined){
+    
+    //console.log("ne tuscias")
+    //console.log(req.query.searchText)
+    let ret = filterItems(file, req.query.searchText)
+    
+    if(ret.length < 1 ){
+      console.log("ner komentaru")
+      res.json({
+       success: true,
+       body: "komentaru nebuvo rasta"
+   });
+
+    }
+    else{
+      console.log(ret)
+      res.json({
+       success: true,
+       body: ret
+   });
+    }
+    
+    
+  }
+  else if(false){
+
+  }
+  else if(false){
+
+  }
+  else{
+       res.json({
        success: true,
        body: await readFromFile()
    });
+
+
+  }
+
+
+
 });
 
 app.get("/api/timestamp/:date_string?", function (req, res) {

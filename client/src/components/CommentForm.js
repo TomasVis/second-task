@@ -21,7 +21,7 @@ export class CommentForm extends Component {
 		this.props.changeStep();
 
 	}
-
+//name,email,date,comment
 	render(){
 		console.log(this.props)
 		const {values, handleChange}  = this.props;
@@ -30,24 +30,31 @@ export class CommentForm extends Component {
 				<React.Fragment>
 					<AppBar title="Parašyk komentarą" />
 					<TextField 
-						hintText="Enter Your Ocupation" 
-						floatingLabelText="Ocupation"
-						onChange={handleChange('ocupation')}
-						defaultValue={values.ocupation}
+						hintText="parašyk savo vardą" 
+						floatingLabelText="Vardas"
+						onChange={handleChange('name')}
+						defaultValue={values.name}
 					/>
 					<br/>
 					<TextField 
-						hintText="Enter Your City" 
-						floatingLabelText="City"
-						onChange={handleChange('city')}
-						defaultValue={values.city}
+						hintText="parašyk savo elektroninį paštą" 
+						floatingLabelText="El-paštas"
+						onChange={handleChange('email')}
+						defaultValue={values.email}
 					/>
 					<br/>
 					<TextField 
-						hintText="Enter Your Bio" 
-						floatingLabelText="Bio"
-						onChange={handleChange('bio')}
-						defaultValue={values.bio}
+						hintText="" 
+						floatingLabelText="Šiandienos data"
+						onChange={handleChange('date')}
+						defaultValue={values.date}
+					/>
+					<br/>
+					<TextField 
+						hintText="parašyk komentarą" 
+						floatingLabelText="Komentaras"
+						onChange={handleChange('comment')}
+						defaultValue={values.comment}
 					/>
 					<br/>
 					<RaisedButton

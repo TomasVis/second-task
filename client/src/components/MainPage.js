@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import CommentForm from './CommentForm'
 import Confirm from './Confirm'
+import SearchForComment from './SearchForComment'
+import SearchResults from './SearchResults'
 /*import FormUserDetails from './FormUserDetails'
 import FormPersonalDetails from './FormPersonalDetails'
 import Confirm from './Confirm'
@@ -8,14 +10,34 @@ import Success from './Success'*/
 
 export class MainPage extends Component {
 	state = {
+		data: null,
 		step:true,
-		firstName:"",
-		lastName:"",
+		controlSearch:true,
+		name:"",
 		email:"",
-		ocupation:"",
-		city:"",
-		bio:"",
+		date:"",
+		comment:"",
+		searchName:"",
+		searchEmail:"",
+		searchDate:"",
+		searchComment:""
 	}
+	  componentDidMount() {
+      // Call our fetch function below once the component mounts
+    this.callBackendAPI()
+      .then(res => this.setState({ data: res.body }))
+      .catch(err => console.log(err));
+  }
+    // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
+  callBackendAPI = async () => {
+    const response = await fetch('/feedbacks');
+    const body = await response.json();
+
+    if (response.status !== 200) {
+      throw Error(body.message) 
+    }
+    return body;
+  };
 
 
 
@@ -30,12 +52,25 @@ export class MainPage extends Component {
 		:
 		this.setState({
 			step:!step,
-			firstName:"",
-			lastName:"",
+			name:"",
 			email:"",
-			ocupation:"",
-			city:"",
-			bio:""
+			date:"",
+			comment:"",
+		})
+
+	}
+		changeSearch = () => {
+		const {controlSearch} =this.state;
+		controlSearch ? 
+		this.setState({
+			controlSearch:!controlSearch
+		})
+		:
+		this.setState({
+			controlSearch:!controlSearch,
+			searchText:"",
+			searchDate:""
+
 		})
 
 	}
@@ -46,12 +81,14 @@ export class MainPage extends Component {
 	}
 
 	render(){
-		console.log(this.state.step)
-		const {step} = this.state;
-		const {firstName,lastName,email,ocupation,city,bio} =this.state;
-		const values = {firstName,lastName,email,ocupation,city,bio}
+		console.log(this.state.data)
+		const {step, controlSearch} = this.state;
+		const {name,email,date,comment,searchText,searchDate} =this.state;
+		const values = {name,email,date,comment}
+		const SearchValues = {searchText,searchDate}
 		return(
 			<div>
+			<p className="App-intro">{this.state.data !== null ? this.state.data.map(el => el.values.name):null}</p>
 			{
 				step ?
 				<CommentForm
@@ -66,6 +103,22 @@ export class MainPage extends Component {
 
 						handleChange={this.handleChange}
 						values={values}
+				/>
+			}
+			{
+				controlSearch ?
+				<SearchForComment
+					changeSearch={this.changeSearch}
+
+						handleChange={this.handleChange}
+						values={SearchValues}
+				/> 
+				:
+				<SearchResults
+					changeSearch={this.changeSearch}
+
+						handleChange={this.handleChange}
+						values={SearchValues}
 				/>
 			}
 			</div>
