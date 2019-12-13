@@ -67,7 +67,7 @@ app.get('/feedbacks?', async function(req, res) {
   //console.log(file)
   // if req.query is empty than it should return all the comments
   if(Object.entries(req.query).length === 0 && req.query.constructor === Object){ // tests for empty object
-    //console.log("dis works")
+    console.log("query was emty, all the comments returned")
          console.log(file)
       res.json({
        success: true,
@@ -83,7 +83,7 @@ app.get('/feedbacks?', async function(req, res) {
       });
 
 
-    }
+  }
     // if only text was entered
   else if(req.query.searchText.length > 0 && req.query.searchDate.length == 0  ){
     
@@ -113,9 +113,7 @@ app.get('/feedbacks?', async function(req, res) {
     console.log("search by date")
 
   }
-  else if(false){
 
-  }
   else{
     console.log("smth unexpected")
        res.json({
