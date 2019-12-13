@@ -5,9 +5,10 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
 
+
 export class SearchForComment extends Component {
 	continue = e => {
-// constructs query string from fields entered to form
+// constructs query string from fields entered to Form
 let params = this.props.values;
 let esc = encodeURIComponent;
 let query = Object.keys(params)
@@ -22,7 +23,9 @@ let query = Object.keys(params)
 			  },
 			  //body: JSON.stringify(this.props)
 			})
-.then((response) => response.json())
+.then((response) => console.log(response.json()))
+//.then((response) => response.json())
+
 
 		//PROCESS FORM //
 		this.props.changeSearch();
@@ -52,6 +55,7 @@ let query = Object.keys(params)
 						defaultValue={values.searchDate}
 					/>
 					<br/>
+
 
 					<RaisedButton
 						label="Ieškoti"

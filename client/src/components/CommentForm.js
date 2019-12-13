@@ -4,8 +4,16 @@ import AppBar from 'material-ui/AppBar';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
-
+//TODO fix text area multiline bug 
 export class CommentForm extends Component {
+	//Formats Date object to YYYY-MM-DD format
+	 format = (date) => {
+	    var d = date.getDate();
+	    var m = date.getMonth() + 1;
+	    var y = date.getFullYear();
+	    return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+	}
+
 	continue = e => {
 		e.preventDefault();
 		  	fetch('/feedbacks', {
@@ -15,7 +23,7 @@ export class CommentForm extends Component {
 			  },
 			  body: JSON.stringify(this.props)
 			})
-.then((response) => response.json())
+		.then((response) => response.json())
 
 		//PROCESS FORM //
 		this.props.changeStep();
@@ -44,19 +52,25 @@ export class CommentForm extends Component {
 					/>
 					<br/>
 					<TextField 
+
 						hintText="" 
 						floatingLabelText="Šiandienos data"
 						onChange={handleChange('date')}
-						defaultValue={values.date}
+						defaultValue={this.format(values.date)}
+						disabled={true}
 					/>
 					<br/>
+
 					<TextField 
 						hintText="parašyk komentarą" 
 						floatingLabelText="Komentaras"
 						onChange={handleChange('comment')}
 						defaultValue={values.comment}
+						multiline="true"
+						rows={6}
 					/>
 					<br/>
+					       
 					<RaisedButton
 						label="Siųsti"
 						primary={true}

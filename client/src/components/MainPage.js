@@ -3,6 +3,7 @@ import CommentForm from './CommentForm'
 import Confirm from './Confirm'
 import SearchForComment from './SearchForComment'
 import SearchResults from './SearchResults'
+import MaterialUIPickers from './MaterialUIPickers.js'
 /*import FormUserDetails from './FormUserDetails'
 import FormPersonalDetails from './FormPersonalDetails'
 import Confirm from './Confirm'
@@ -15,14 +16,14 @@ export class MainPage extends Component {
 		controlSearch:true,
 		name:"",
 		email:"",
-		date:"",
+		date:new Date(new Date().getFullYear(),new Date().getMonth() , new Date().getDate()),
 		comment:"",
-		searchName:"",
-		searchEmail:"",
-		searchDate:"",
-		searchComment:""
+		searchText:"",
+		searchDate:""
+
 	}
 	  componentDidMount() {
+
       // Call our fetch function below once the component mounts
     this.callBackendAPI()
       .then(res => this.setState({ data: res.body }))
@@ -89,6 +90,7 @@ export class MainPage extends Component {
 		return(
 			<div>
 			<p className="App-intro">{this.state.data !== null ? this.state.data.map(el => el.values.name):null}</p>
+			<MaterialUIPickers/>
 			{
 				step ?
 				<CommentForm

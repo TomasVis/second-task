@@ -45,7 +45,7 @@ app.post('/feedbacks', async function(req, res) {
 });
 
 
-let funk =  (a,b) => {
+let lookForMatches =  (a,b) => {
   let cont = false;
   for (let prop in a) {
   
@@ -57,61 +57,70 @@ let funk =  (a,b) => {
 }
 //console.log(funk(arr.values,"bab"))
 const filterItems = (arr, query) => {
-  return arr.filter(el => funk(el.values,query));
+  return arr.filter(el => lookForMatches(el.values,query));
 };
 
 
-
-
-
-
-
-
 app.get('/feedbacks?', async function(req, res) {
-  //console.log(req.query)
+  console.log(req.query)
   let file = await readFromFile()
   //console.log(file)
-  if(req.query.length<1){
-         console.log("ner komentaru")
+  // if req.query is empty than it should return all the comments
+  if(Object.entries(req.query).length === 0 && req.query.constructor === Object){ // tests for empty object
+    //console.log("dis works")
+         console.log(file)
       res.json({
        success: true,
-       body: "komentaru nebuvo rasta"
+       body: file
    });
   }
-  else if(req.query.searchText !== undefined){
+    // if both text and date were entered
+  else if(req.query.searchText.length > 0 && req.query.searchDate.length > 0  ){
+      console.log("text and date were entered")
+      res.json({
+        success: true,
+        body: "search by date and text"
+      });
+
+
+    }
+    // if only text was entered
+  else if(req.query.searchText.length > 0 && req.query.searchDate.length == 0  ){
     
     //console.log("ne tuscias")
     //console.log(req.query.searchText)
-    let ret = filterItems(file, req.query.searchText)
+    let foundComments = filterItems(file, req.query.searchText)
     
-    if(ret.length < 1 ){
-      console.log("ner komentaru")
+    if(foundComments.length < 1 ){
+      console.log("ner tokiu komentaru")
       res.json({
-       success: true,
-       body: "komentaru nebuvo rasta"
-   });
+        success: true,
+        body: "komentaru nebuvo rasta"
+      });
 
     }
     else{
-      console.log(ret)
+      console.log(foundComments)
       res.json({
        success: true,
-       body: ret
+       body: foundComments
    });
     }
     
     
   }
-  else if(false){
+  else if(req.query.searchText.length == 0 && req.query.searchDate.length > 0  ){
+    console.log("search by date")
 
   }
   else if(false){
 
   }
   else{
+    console.log("smth unexpected")
        res.json({
        success: true,
-       body: await readFromFile()
+       body: "error"
    });
 
 
