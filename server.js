@@ -66,8 +66,9 @@ app.get('/feedbacks?', async function(req, res) {
   let file = await readFromFile()
   //console.log(file)
   // if req.query is empty than it should return all the comments
-  if(Object.entries(req.query).length === 0 && req.query.constructor === Object){ // tests for empty object
-    console.log("query was emty, all the comments returned")
+  //if(Object.entries(req.query).length === 0 && req.query.constructor === Object){ // tests for empty object
+  if(req.query.searchText.length == 0 && req.query.searchDate.length == 0  ){ // tests for empty object
+    console.log("query was empty, all the comments returned")
          console.log(file)
       res.json({
        success: true,

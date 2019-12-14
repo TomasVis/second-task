@@ -22,7 +22,7 @@ export class MainPage extends Component {
 		searchDate:""
 
 	}
-	  componentDidMount() {
+/*	  componentDidMount() {
 
       // Call our fetch function below once the component mounts
     this.callBackendAPI()
@@ -40,7 +40,7 @@ export class MainPage extends Component {
     return body;
   };
 
-
+*/
 
 
 		//Go back to previous step
@@ -75,21 +75,26 @@ export class MainPage extends Component {
 		})
 
 	}
-
+	handleData = (e) => {
+		this.setState({
+			data: e
+		})
+	}
 	//handle change
 	handleChange = input => e => {
 		this.setState({[input]:e.target.value})
 	}
 
 	render(){
-		console.log(this.state.data)
+		//console.log(this.state.data)
 		const {step, controlSearch} = this.state;
-		const {name,email,date,comment,searchText,searchDate} =this.state;
+		const {name,email,date,comment,searchText,searchDate,data} =this.state;
 		const values = {name,email,date,comment}
 		const SearchValues = {searchText,searchDate}
+		const searchData = data
 		return(
 			<div>
-			<p className="App-intro">{this.state.data !== null ? this.state.data.map(el => el.values.name):null}</p>
+{/*			<p className="App-intro">{this.state.data !== null ? this.state.data.map(el => el.values.name):null}</p>*/}
 			<MaterialUIPickers/>
 			{
 				step ?
@@ -118,9 +123,11 @@ export class MainPage extends Component {
 				:
 				<SearchResults
 					changeSearch={this.changeSearch}
+					handleData={this.handleData}
 
 						handleChange={this.handleChange}
 						values={SearchValues}
+						data={searchData}
 				/>
 			}
 			</div>

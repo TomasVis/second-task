@@ -8,7 +8,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 export class SearchForComment extends Component {
 	continue = e => {
-// constructs query string from fields entered to Form
+/*// constructs query string from fields entered to Form
 let params = this.props.values;
 let esc = encodeURIComponent;
 let query = Object.keys(params)
@@ -25,7 +25,7 @@ let query = Object.keys(params)
 			})
 .then((response) => console.log(response.json()))
 //.then((response) => response.json())
-
+*/
 
 		//PROCESS FORM //
 		this.props.changeSearch();
@@ -35,7 +35,7 @@ let query = Object.keys(params)
 
 //searchName,searchEmail,searchDate,searchComment
 	render(){
-		console.log(this.props)
+		//console.log(this.props)
 		const {values, handleChange}  = this.props;
 		return(
 			<MuiThemeProvider>
