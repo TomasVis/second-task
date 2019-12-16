@@ -97,6 +97,7 @@ export class MainPage extends Component {
 		const values = { name, email, date, comment };
 		const SearchValues = { searchText, searchDate };
 		const searchData = data;
+		console.log(this.props)
 		return (
 			<div>
 				{/*			<p className="App-intro">{this.state.data !== null ? this.state.data.map(el => el.values.name):null}</p>*/}

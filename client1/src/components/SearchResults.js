@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import {List, ListItem} from 'material-ui/List';
-import {Card} from 'material-ui/Card';
-import RaisedButton from 'material-ui/RaisedButton';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 
+import {List, ListItem} from '@material-ui/core';
+import Card from '@material-ui/core/Card';
+
+import AppBar from '@material-ui/core/AppBar';
+import TextField from '@material-ui/core/TextField';
+import RaisedButton from '@material-ui/core/Button';
 
 
 
@@ -56,10 +58,10 @@ componentDidMount(){
 		
 		const {values:{firstName,lastName,email,
 			ocupation, city, bio} }  = this.props;
-			console.log(this.props.data)
+			console.log(this.props)
 		return(
 
-			<MuiThemeProvider>
+			<MuiThemeProvider >
 			<React.Fragment >
 						<p className="App-intro">{this.props.data !== null ? this.props.data.map(el => el.values.name):null}</p>
 
