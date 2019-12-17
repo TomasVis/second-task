@@ -3,7 +3,6 @@ import CommentForm from "./CommentForm";
 import Confirm from "./Confirm";
 import SearchForComment from "./SearchForComment";
 import SearchResults from "./SearchResults";
-import MaterialUIPickers from "./MaterialUIPickers.js";
 /*import FormUserDetails from './FormUserDetails'
 import FormPersonalDetails from './FormPersonalDetails'
 import Confirm from './Confirm'
@@ -101,7 +100,7 @@ export class MainPage extends Component {
 		return (
 			<div>
 				{/*			<p className="App-intro">{this.state.data !== null ? this.state.data.map(el => el.values.name):null}</p>*/}
-				<MaterialUIPickers />
+
 				{step ? (
 					<CommentForm
 						changeStep={this.changeStep}

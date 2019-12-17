@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 //import { MuiThemeProvider } from '@material-ui/core/styles';
-import { Paper, Typography, TextField, Button } from "@material-ui/core";
+import { Paper, Typography, TextField, Button, FormHelperText  } from "@material-ui/core";
 
 
 
@@ -14,7 +14,7 @@ import AppBar from '@material-ui/core/AppBar';
 
 import RaisedButton from '@material-ui/core/Button';
 
-//TODO fix text area multiline bug 
+
 export class CommentForm extends Component {
 	//Formats Date object to YYYY-MM-DD format
 	 format = (date) => {
@@ -45,35 +45,34 @@ export class CommentForm extends Component {
 		const {values, handleChange}  = this.props;
 		return(
 			<Paper>
-				<React.Fragment>
+
 					<AppBar title="Parašyk komentarą" />
+					<FormHelperText >Vardas</FormHelperText>
 					<TextField 
-						hintText="parašyk savo vardą" 
-						floatingLabelText="Vardas"
+						placeholder="parašyk savo vardą" 
 						onChange={handleChange('name')}
 						defaultValue={values.name}
 					/>
 					<br/>
+										<FormHelperText >El-paštas</FormHelperText>
 					<TextField 
-						hintText="parašyk savo elektroninį paštą" 
-						floatingLabelText="El-paštas"
+						placeholder="parašyk savo elektroninį paštą" 
 						onChange={handleChange('email')}
 						defaultValue={values.email}
 					/>
 					<br/>
+										<FormHelperText >Šiandienos data</FormHelperText>
 					<TextField 
 
-						hintText="" 
-						floatingLabelText="Šiandienos data"
+						placeholder="" 
 						onChange={handleChange('date')}
 						defaultValue={this.format(values.date)}
 						disabled={true}
 					/>
 					<br/>
-
+					<FormHelperText >Komentaras</FormHelperText>
 					<TextField 
-						hintText="parašyk komentarą" 
-						floatingLabelText="Komentaras"
+						placeholder="parašyk komentarą" 
 						onChange={handleChange('comment')}
 						defaultValue={values.comment}
 						multiline="true"
@@ -81,14 +80,15 @@ export class CommentForm extends Component {
 					/>
 					<br/>
 					       
-					<RaisedButton
-						label="Siųsti"
-						primary={true}
-						style={styles.button}
-						onClick={this.continue}
-					/>
 
-				</React.Fragment>
+										<Button
+						variant="contained"
+						color="primary"
+						onClick={this.continue}
+					>
+						Siųsti
+					</Button>
+
 			</Paper>
 
 

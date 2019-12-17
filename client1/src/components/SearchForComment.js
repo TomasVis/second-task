@@ -1,14 +1,13 @@
-import React, { Component } from 'react'
-import { MuiThemeProvider } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import TextField from '@material-ui/core/TextField';
-import RaisedButton from '@material-ui/core/Button';
-
+import React, { Component } from "react";
+import { MuiThemeProvider } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import { Paper, Typography, TextField, Button, FormHelperText  } from "@material-ui/core";
+import MaterialUIPickers from "./MaterialUIPickers.js";
 
 
 export class SearchForComment extends Component {
 	continue = e => {
-/*// constructs query string from fields entered to Form
+		/*// constructs query string from fields entered to Form
 let params = this.props.values;
 let esc = encodeURIComponent;
 let query = Object.keys(params)
@@ -29,57 +28,53 @@ let query = Object.keys(params)
 
 		//PROCESS FORM //
 		this.props.changeSearch();
+	};
 
-	}
-
-
-//searchName,searchEmail,searchDate,searchComment
-	render(){
+	//searchName,searchEmail,searchDate,searchComment
+	render() {
 		//console.log(this.props)
-		const {values, handleChange}  = this.props;
-		return(
-			<MuiThemeProvider>
+		const { values, handleChange } = this.props;
+		return (
+
+						<Paper>
 				<React.Fragment>
 					<AppBar title="Ieškok komentarų" />
-					<TextField 
-						hintText="Pagal tekstą" 
-						floatingLabelText="Tekstas"
-						onChange={handleChange('searchText')}
+					<FormHelperText>Tekstas</FormHelperText>
+					<TextField
+						placeholder="Pagal tekstą"
+						onChange={handleChange("searchText")}
 						defaultValue={values.searchText}
 					/>
-					<br/>
-					<TextField 
-						hintText="Pagal datą" 
-						floatingLabelText="Data"
-						onChange={handleChange('searchDate')}
+					<br />
+					<FormHelperText>Data</FormHelperText>
+									<MaterialUIPickers />
+					<TextField
+						placeholder="Pagal datą"
+						onChange={handleChange("searchDate")}
 						defaultValue={values.searchDate}
 					/>
-					<br/>
+					<br />
 
-
-					<RaisedButton
-						label="Ieškoti"
-						primary={true}
-						style={styles.button}
+					<Button
+						variant="contained"
+						color="primary"
 						onClick={this.continue}
-					/>
-
+					>
+						Ieškoti
+					</Button>
 				</React.Fragment>
-			</MuiThemeProvider>
+							</Paper>
 
-
-		)
+		);
 	}
 }
 const styles = {
-	button:{
-		margin:15
+	button: {
+		margin: 15
 	}
-}
+};
 
-export default SearchForComment
-
-
+export default SearchForComment;
 
 /*
 let params = {
