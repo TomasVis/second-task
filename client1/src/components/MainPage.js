@@ -15,14 +15,12 @@ export class MainPage extends Component {
 		controlSearch: true,
 		name: "",
 		email: "",
-		date: new Date(
-			new Date().getFullYear(),
-			new Date().getMonth(),
-			new Date().getDate()
-		),
+		date: new Date(),
 		comment: "",
 		searchText: "",
-		searchDate: ""
+		searchDate: "",
+		searchDateFrom: null,
+		searchDateTo: null
 	};
 	/*	  componentDidMount() {
 
@@ -81,6 +79,10 @@ export class MainPage extends Component {
 		this.setState({ [input]: e.target.value });
 	};
 
+		handleDateChange = input => e => {
+		this.setState({ [input]: e });
+	};
+
 	render() {
 		//console.log(this.state.data)
 		const { step, controlSearch } = this.state;
@@ -91,24 +93,35 @@ export class MainPage extends Component {
 			comment,
 			searchText,
 			searchDate,
+			searchDateFrom,
+			searchDateTo,
 			data
 		} = this.state;
 		const values = { name, email, date, comment };
-		const SearchValues = { searchText, searchDate };
+		const SearchValues = {
+			searchText,
+			searchDate,
+			searchDateFrom,
+			searchDateTo,
+			date
+		};
 		const searchData = data;
-		console.log(this.props)
+		console.log(this.state);
 		return (
 			<div>
 				{/*			<p className="App-intro">{this.state.data !== null ? this.state.data.map(el => el.values.name):null}</p>*/}
 
 				{step ? (
 					<CommentForm
+						style={styles.paper}
 						changeStep={this.changeStep}
 						handleChange={this.handleChange}
+						handleDateChange={this.handleDateChange}
 						values={values}
 					/>
 				) : (
 					<Confirm
+					style={styles.paper}
 						changeStep={this.changeStep}
 						handleChange={this.handleChange}
 						values={values}
@@ -116,8 +129,10 @@ export class MainPage extends Component {
 				)}
 				{controlSearch ? (
 					<SearchForComment
+						style={styles.paper}
 						changeSearch={this.changeSearch}
 						handleChange={this.handleChange}
+						handleDateChange={this.handleDateChange}
 						values={SearchValues}
 					/>
 				) : (
@@ -136,6 +151,14 @@ export class MainPage extends Component {
 
 export default MainPage;
 
+const styles = {
+	paper: {
+		margin: 15,
+		display: "flex",
+		flexDirection: "column",
+		width: "250px"
+	}
+};
 /*
 		switch(step){
 			case 1 :

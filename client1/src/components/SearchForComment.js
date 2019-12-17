@@ -1,31 +1,28 @@
 import React, { Component } from "react";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
-import { Paper, Typography, TextField, Button, FormHelperText  } from "@material-ui/core";
-import MaterialUIPickers from "./MaterialUIPickers.js";
+import {
+	Paper,
+	Typography,
+	TextField,
+	Button,
+	FormHelperText
+} from "@material-ui/core";
 
+
+//-----------------------------------------------
+import "date-fns";
+
+import Grid from "@material-ui/core/Grid";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+	MuiPickersUtilsProvider,
+	KeyboardTimePicker,
+	KeyboardDatePicker
+} from "@material-ui/pickers";
 
 export class SearchForComment extends Component {
 	continue = e => {
-		/*// constructs query string from fields entered to Form
-let params = this.props.values;
-let esc = encodeURIComponent;
-let query = Object.keys(params)
-    .map(k => esc(k) + '=' + esc(params[k]))
-    .join('&');
-    console.log(query)
-		e.preventDefault();
-		  	fetch('/feedbacks?'+query, {
-			  method: "GET",
-			  headers: {
-			    'Content-type': 'application/json'
-			  },
-			  //body: JSON.stringify(this.props)
-			})
-.then((response) => console.log(response.json()))
-//.then((response) => response.json())
-*/
-
 		//PROCESS FORM //
 		this.props.changeSearch();
 	};
@@ -33,46 +30,64 @@ let query = Object.keys(params)
 	//searchName,searchEmail,searchDate,searchComment
 	render() {
 		//console.log(this.props)
-		const { values, handleChange } = this.props;
+		const { values, handleChange, handleDateChange, style } = this.props;
 		return (
+			<Paper style={style}>
+				<FormHelperText>Tekstas</FormHelperText>
+				<TextField
+					placeholder="Pagal tekstą"
+					onChange={handleChange("searchText")}
+					defaultValue={values.searchText}
+				/>
+				<br />
+				<FormHelperText>Data</FormHelperText>
+				<MuiPickersUtilsProvider utils={DateFnsUtils}>
+					<Grid container justify="space-around">
+						<KeyboardDatePicker
+							disableToolbar
+							variant="inline"
+							format="yyyy-MM-dd"
+							margin="normal"
+							id="date-picker-inline"
+							label="Data Nuo:"
+							value={values.searchDateFrom}
+							onChange={handleDateChange("searchDateFrom")}
+							KeyboardButtonProps={{
+								"aria-label": "change date"
+							}}
+						/>
+					</Grid>
+				</MuiPickersUtilsProvider>
+				<MuiPickersUtilsProvider utils={DateFnsUtils}>
+					<Grid container justify="space-around">
+						<KeyboardDatePicker
+							disableToolbar
+							variant="inline"
+							format="yyyy-MM-dd"
+							margin="normal"
+							id="date-picker-inline"
+							label="Data Iki:"
+							value={values.searchDateTo}
+							onChange={handleDateChange("searchDateTo")}
+							KeyboardButtonProps={{
+								"aria-label": "change date"
+							}}
+						/>
+					</Grid>
+				</MuiPickersUtilsProvider>
+				<br />
 
-						<Paper>
-				<React.Fragment>
-					<AppBar title="Ieškok komentarų" />
-					<FormHelperText>Tekstas</FormHelperText>
-					<TextField
-						placeholder="Pagal tekstą"
-						onChange={handleChange("searchText")}
-						defaultValue={values.searchText}
-					/>
-					<br />
-					<FormHelperText>Data</FormHelperText>
-									<MaterialUIPickers />
-					<TextField
-						placeholder="Pagal datą"
-						onChange={handleChange("searchDate")}
-						defaultValue={values.searchDate}
-					/>
-					<br />
-
-					<Button
-						variant="contained"
-						color="primary"
-						onClick={this.continue}
-					>
-						Ieškoti
-					</Button>
-				</React.Fragment>
-							</Paper>
-
+				<Button
+					variant="contained"
+					color="primary"
+					onClick={this.continue}
+				>
+					Ieškoti
+				</Button>
+			</Paper>
 		);
 	}
 }
-const styles = {
-	button: {
-		margin: 15
-	}
-};
 
 export default SearchForComment;
 

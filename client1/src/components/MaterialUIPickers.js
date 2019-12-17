@@ -15,7 +15,7 @@ export default function MaterialUIPickers() {
   const handleDateChange = date => {
     setSelectedDate(date);
   };
-
+//console.log(setSelectedDate)
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container justify="space-around">
@@ -25,7 +25,7 @@ export default function MaterialUIPickers() {
           format="yyyy-MM-dd"
           margin="normal"
           id="date-picker-inline"
-          label="Date picker inline"
+          label="Data Nuo:"
           value={selectedDate}
           onChange={handleDateChange}
           KeyboardButtonProps={{
