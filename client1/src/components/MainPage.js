@@ -66,7 +66,8 @@ export class MainPage extends Component {
 			: this.setState({
 					controlSearch: !controlSearch,
 					searchText: "",
-					searchDate: ""
+					searchDateFrom: null,
+		searchDateTo: null
 			  });
 	};
 	handleData = e => {
@@ -84,7 +85,7 @@ export class MainPage extends Component {
 	};
 
 	render() {
-		//console.log(this.state.data)
+		console.log(this.state.data)
 		const { step, controlSearch } = this.state;
 		const {
 			name,
@@ -100,10 +101,10 @@ export class MainPage extends Component {
 		const values = { name, email, date, comment };
 		const SearchValues = {
 			searchText,
-			searchDate,
+
 			searchDateFrom,
 			searchDateTo,
-			date
+
 		};
 		const searchData = data;
 		console.log(this.state);

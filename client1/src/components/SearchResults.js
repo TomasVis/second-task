@@ -53,16 +53,12 @@ export class FormUserDetails extends Component {
 
 	render() {
 		const {
-			values: { firstName, lastName, email, ocupation, city, bio }
+			values: { firstName, lastName, email, ocupation, city, bio, data }
 		} = this.props;
 		console.log(this.props);
 		return (
 			<div style={{display:"flex",flexWrap:"wrap",backgroundColor:"red"}}>
-{/*				<p className="App-intro">
-					{this.props.data !== null
-						? this.props.data.map(el => el.values.name)
-						: null}
-				</p>*/}
+
 
 
 				{this.props.data !== null

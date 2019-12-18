@@ -1,13 +1,12 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const fs = require('fs');
-const bodyParser = require('body-parser')
-const url = require('url');
-const querystring = require('querystring');
-
+const fs = require("fs");
+const bodyParser = require("body-parser");
+const url = require("url");
+const querystring = require("querystring");
 
 const PORT = 3212;
-const FILE = './feedbacks.json';
+const FILE = "./feedbacks.json";
 
 //app.use('/', express.static('public'));
 app.use(express.json());
@@ -20,63 +19,95 @@ app.use(bodyParser.json())*/
 });*/
 
 async function writeToFile(body) {
-   const comments = await readFromFile();
-   comments.push(body);
-   const error = fs.writeFileSync(FILE, JSON.stringify(comments));
-   return error;
+  const comments = await readFromFile();
+  comments.push(body);
+  const error = fs.writeFileSync(FILE, JSON.stringify(comments));
+  return error;
 }
 
 async function readFromFile() {
-   const rawdata = await fs.readFileSync(FILE);
-   const comments = JSON.parse(rawdata);
+  const rawdata = await fs.readFileSync(FILE);
+  const comments = JSON.parse(rawdata);
 
-   return comments;
+  return comments;
 }
 
-
-
-app.post('/feedbacks', async function(req, res) {
+app.post("/feedbacks", async function(req, res) {
   //console.log(req.body)
-   await writeToFile(req.body);
-       res.json({
-           success: true,
-           body: req.body
-       });
+  await writeToFile(req.body);
+  res.json({
+    success: true,
+    body: req.body
+  });
 });
 
-
-let lookForMatches =  (a,b) => {
+// searches for a match in every property of an object (except "date" property)
+let lookForMatches = (obj, text) => {
   let cont = false;
-  for (let prop in a) {
-  
- if(a[prop].toLowerCase().indexOf(b.toLowerCase()) !== -1) cont = true
+  for (let prop in obj) {
+    if (
+      obj[prop].toLowerCase().indexOf(text.toLowerCase()) !== -1 &&
+      prop !== "date"
+    )
+      cont = true;
     //console.log(el.values[prop] )
-}
- return  cont ;
-
-}
-//console.log(funk(arr.values,"bab"))
-const filterItems = (arr, query) => {
-  return arr.filter(el => lookForMatches(el.values,query));
+  }
+  return cont;
 };
 
-
-app.get('/feedbacks?', async function(req, res) {
-  console.log(req.query)
-  let file = await readFromFile()
-  //console.log(file)
-  // if req.query is empty than it should return all the comments
-  //if(Object.entries(req.query).length === 0 && req.query.constructor === Object){ // tests for empty object
-  if(req.query.searchText.length == 0 && req.query.searchDate.length == 0  ){ // tests for empty object
-    console.log("query was empty, all the comments returned")
-         console.log(file)
-      res.json({
-       success: true,
-       body: file
-   });
+let checkDateBoundaries = (obj, queryDate, dateFrom) =>{
+  //console.log(new Date(queryDate).getTime());
+  //console.log(new Date(obj.date).getTime());
+  let objTime = new Date(obj.date).getTime() 
+  let queryTime = new Date(queryDate).getTime();
+  //console.log(new Date(obj.date).getTime() < new Date(queryDate).getTime());
+  let answer = false
+  if(dateFrom){
+    answer = objTime > queryTime
   }
-    // if both text and date were entered
-  else if(req.query.searchText.length > 0 && req.query.searchDate.length > 0  ){
+  else{
+    answer = objTime < queryTime
+  }
+  //dateFrom ? answer = new Date(queryDate).getTime() < Date(obj.date).getTime() : answer =  new Date(queryDate).getTime() > Date(obj.date).getTime()
+return answer
+}
+//console.log(funk(arr.values,"bab"))
+//calls function that searches for matches on each elemen in array
+const filterItems = (arr, query) => {
+  return arr.filter(el => lookForMatches(el, query));
+};
+const filterDateFrom = (arr, query) => {
+  return arr.filter(el => checkDateBoundaries(el, query, true));
+};
+const searchDateTo = (arr, query) => {
+  return arr.filter(el => checkDateBoundaries(el, query, false));
+};
+
+app.get("/feedbacks?", async function(req, res) {
+  console.log(req.query);
+  let file = await readFromFile();
+  //console.log(file)
+  // if all search fields are empty, than all the comments should be returned
+  //if(Object.entries(req.query).length === 0 && req.query.constructor === Object){ // tests for empty object
+  if (req.query.searchText.length !== 0) {
+    console.log("text not empty");
+
+    file = filterItems(file, req.query.searchText);
+    console.log(file);
+  }
+  if (req.query.searchDateFrom !== "null") {
+    file = filterDateFrom(file, req.query.searchDateFrom);
+  }
+  if (req.query.searchDateTo !== "null") {
+    file = filterDateFrom(file, req.query.searchDateTo);
+  }
+
+  res.json({
+    success: true,
+    body: file
+  });
+  // if both text and date were entered
+  /*  else if(req.query.searchText.length > 0 && req.query.searchDateFrom !== "null"  ){
       console.log("text and date were entered")
       res.json({
         success: true,
@@ -86,7 +117,7 @@ app.get('/feedbacks?', async function(req, res) {
 
   }
     // if only text was entered
-  else if(req.query.searchText.length > 0 && req.query.searchDate.length == 0  ){
+  else if(req.query.searchText.length > 0 && req.query.searchDateFrom == "null"  ){
     
     //console.log("ne tuscias")
     //console.log(req.query.searchText)
@@ -96,7 +127,7 @@ app.get('/feedbacks?', async function(req, res) {
       console.log("ner tokiu komentaru")
       res.json({
         success: true,
-        body: "komentaru nebuvo rasta"
+        body:null
       });
 
     }
@@ -110,7 +141,7 @@ app.get('/feedbacks?', async function(req, res) {
     
     
   }
-  else if(req.query.searchText.length == 0 && req.query.searchDate.length > 0  ){
+  else if(req.query.searchText.length == 0 && req.query.searchDateFrom.length > 0  ){
     console.log("search by date")
 
   }
@@ -123,30 +154,24 @@ app.get('/feedbacks?', async function(req, res) {
    });
 
 
-  }
-
-
-
+  }*/
 });
 
-app.get("/api/timestamp/:date_string?", function (req, res) {
-
+app.get("/api/timestamp/:date_string?", function(req, res) {
   var date = 0;
-  if(req.params.date_string == undefined){
-    date = new Date()
+  if (req.params.date_string == undefined) {
+    date = new Date();
+  } else if (isNaN(req.params.date_string)) {
+    date = new Date(Date.parse(req.params.date_string));
+  } else if (!isNaN(req.params.date_string)) {
+    date = new Date(Number(req.params.date_string));
   }
-  else if(isNaN(req.params.date_string)){
-    date = new Date( Date.parse(req.params.date_string));
-  }
-  else if (!isNaN(req.params.date_string)){
-    date = new Date(Number(req.params.date_string))
-  }
- 
-  res.send({"unix": date.getTime(), "utc" : date.toUTCString() })
+
+  res.send({ unix: date.getTime(), utc: date.toUTCString() });
 });
 // Shows that back end is connected
-app.get('/express_backend', (req, res) => {
-  res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
+app.get("/express_backend", (req, res) => {
+  res.send({ express: "YOUR EXPRESS BACKEND IS CONNECTED TO REACT" });
 });
 
 app.listen(PORT, () => console.log(`Server app listening on port ${PORT}!`));

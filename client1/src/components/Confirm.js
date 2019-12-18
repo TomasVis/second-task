@@ -35,7 +35,7 @@ export class FormUserDetails extends Component {
 			values: { name, email, date, comment, style }
 		} = this.props;
 		return (
-			<Paper style={style}>
+			<Paper style={this.props.style}>
 				<AppBar title="Komentaras išsaugotas" />
 				<List>
 					<ListItem>
