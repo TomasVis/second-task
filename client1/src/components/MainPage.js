@@ -3,10 +3,6 @@ import CommentForm from "./CommentForm";
 import Confirm from "./Confirm";
 import SearchForComment from "./SearchForComment";
 import SearchResults from "./SearchResults";
-/*import FormUserDetails from './FormUserDetails'
-import FormPersonalDetails from './FormPersonalDetails'
-import Confirm from './Confirm'
-import Success from './Success'*/
 
 export class MainPage extends Component {
 	state = {
@@ -18,31 +14,11 @@ export class MainPage extends Component {
 		date: new Date(),
 		comment: "",
 		searchText: "",
-		searchDate: "",
 		searchDateFrom: null,
 		searchDateTo: null
 	};
-	/*	  componentDidMount() {
 
-      // Call our fetch function below once the component mounts
-    this.callBackendAPI()
-      .then(res => this.setState({ data: res.body }))
-      .catch(err => console.log(err));
-  }
-    // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
-  callBackendAPI = async () => {
-    const response = await fetch('/feedbacks');
-    const body = await response.json();
-
-    if (response.status !== 200) {
-      throw Error(body.message) 
-    }
-    return body;
-  };
-
-*/
-
-	//Go back to previous step
+	//Controler for coment form and confirmation
 	changeStep = () => {
 		const { step } = this.state;
 		step
@@ -57,6 +33,7 @@ export class MainPage extends Component {
 					comment: ""
 			  });
 	};
+	//Controler for search form and search results
 	changeSearch = () => {
 		const { controlSearch } = this.state;
 		controlSearch
@@ -67,7 +44,7 @@ export class MainPage extends Component {
 					controlSearch: !controlSearch,
 					searchText: "",
 					searchDateFrom: null,
-		searchDateTo: null
+					searchDateTo: null
 			  });
 	};
 	handleData = e => {
@@ -79,39 +56,29 @@ export class MainPage extends Component {
 	handleChange = input => e => {
 		this.setState({ [input]: e.target.value });
 	};
-
-		handleDateChange = input => e => {
+	//different than handleChange because date picker event does not have target
+	handleDateChange = input => e => {
 		this.setState({ [input]: e });
 	};
 
 	render() {
-		console.log(this.state.data)
-		const { step, controlSearch } = this.state;
 		const {
+			step,
+			controlSearch,
 			name,
 			email,
 			date,
 			comment,
 			searchText,
-			searchDate,
 			searchDateFrom,
 			searchDateTo,
 			data
 		} = this.state;
 		const values = { name, email, date, comment };
-		const SearchValues = {
-			searchText,
+		const SearchValues = { searchText, searchDateFrom, searchDateTo };
 
-			searchDateFrom,
-			searchDateTo,
-
-		};
-		const searchData = data;
-		console.log(this.state);
 		return (
 			<div>
-				{/*			<p className="App-intro">{this.state.data !== null ? this.state.data.map(el => el.values.name):null}</p>*/}
-
 				{step ? (
 					<CommentForm
 						style={styles.paper}
@@ -122,7 +89,7 @@ export class MainPage extends Component {
 					/>
 				) : (
 					<Confirm
-					style={styles.paper}
+						style={styles.paper}
 						changeStep={this.changeStep}
 						handleChange={this.handleChange}
 						values={values}
@@ -142,7 +109,7 @@ export class MainPage extends Component {
 						handleData={this.handleData}
 						handleChange={this.handleChange}
 						values={SearchValues}
-						data={searchData}
+						data={data}
 					/>
 				)}
 			</div>
@@ -160,39 +127,4 @@ const styles = {
 		width: "250px"
 	}
 };
-/*
-		switch(step){
-			case 1 :
-				return(
-					<FormUserDetails
-						nextStep={this.nextStep}
-						handleChange={this.handleChange}
-						values={values}
-					/>
-				)
-			case 2 :
-				return(
-					<FormPersonalDetails
-						nextStep={this.nextStep}
-						prevStep={this.previousStep}
-						handleChange={this.handleChange}
-						values={values}
-					/>
-				)
-			case 3 :
-				return(
-					<Confirm
-						nextStep={this.nextStep}
-						prevStep={this.previousStep}
-						values={values}
-					/>
-				)
-			case 4 :
-				return <Success/>
 
-
-
-
-
-		}
-*/

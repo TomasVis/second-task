@@ -1,25 +1,13 @@
 import React, { Component } from "react";
+import { List, ListItem, Paper, Button, ListItemText  } from "@material-ui/core";
 
-import {
-	Paper,
-	Typography,
-	TextField,
-	Button,
-	FormHelperText,
-	ListItemText
-} from "@material-ui/core";
 
-import { List, ListItem } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-
-import AppBar from "@material-ui/core/AppBar";
-
-export class FormUserDetails extends Component {
+export class Confirm extends Component {
 	restart = e => {
 		e.preventDefault();
-		//PROCESS FORM //
 		this.props.changeStep();
 	};
+
 	//Formats Date object to YYYY-MM-DD format
 	format = date => {
 		var d = date.getDate();
@@ -32,11 +20,10 @@ export class FormUserDetails extends Component {
 
 	render() {
 		const {
-			values: { name, email, date, comment, style }
+			values: { name, email, date, comment }
 		} = this.props;
 		return (
 			<Paper style={this.props.style}>
-				<AppBar title="Komentaras išsaugotas" />
 				<List>
 					<ListItem>
 						<ListItemText primary={name} />
@@ -63,10 +50,5 @@ export class FormUserDetails extends Component {
 		);
 	}
 }
-const styles = {
-	button: {
-		margin: 15
-	}
-};
 
-export default FormUserDetails;
+export default Confirm;
