@@ -51,9 +51,9 @@ let checkDateBoundaries = (obj, queryDate, dateFrom) => {
   let queryTime = new Date(queryDate).getTime();
   let answer = false;
 
-  if (dateFrom == true) {
+  if (dateFrom ) {
     answer = objTime > queryTime;
-  } else if (dateFrom == false) {
+  } else if (!dateFrom ) {
     answer = objTime < queryTime;
   }
   return answer;
@@ -72,15 +72,15 @@ const searchDateTo = (arr, query) => {
 };
 
 app.get("/feedbacks?", async function(req, res) {
-  console.log(req.query);
+
   let file = await readFromFile();
 
   
   if (req.query.searchText.length !== 0) {
-    console.log("text not empty");
+
 //if textfield is not empty, filters through comments and returns only those that match query
     file = filterItems([...file], req.query.searchText);
-    console.log(file);
+
   }
   //if searchDateFrom is not empty, filters through comments and returns only those that match date boundaries
   if (req.query.searchDateFrom !== "null") {
