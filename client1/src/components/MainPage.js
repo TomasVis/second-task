@@ -44,7 +44,8 @@ export class MainPage extends Component {
 					controlSearch: !controlSearch,
 					searchText: "",
 					searchDateFrom: null,
-					searchDateTo: null
+					searchDateTo: null,
+					data:null
 			  });
 	};
 	handleData = e => {
@@ -78,7 +79,8 @@ export class MainPage extends Component {
 		const SearchValues = { searchText, searchDateFrom, searchDateTo };
 
 		return (
-			<div>
+			<div style={{display:"flex",
+			flexDirection:"column",alignItems:"center"}}>
 				{step ? (
 					<CommentForm
 						style={styles.paper}

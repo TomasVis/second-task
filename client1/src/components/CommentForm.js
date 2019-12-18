@@ -4,7 +4,8 @@ import {
 	TextField,
 	Button,
 	FormHelperText,
-	Grid
+	Grid,
+	Typography
 } from "@material-ui/core";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
@@ -31,6 +32,9 @@ export class CommentForm extends Component {
 		const { values, handleChange, style, handleDateChange } = this.props;
 		return (
 			<Paper style={style}>
+			<Typography variant="h5" component="h2">
+					Parašyk Komentarą
+				</Typography>
 				<FormHelperText>Vardas</FormHelperText>
 				<TextField
 					placeholder="parašyk savo vardą"

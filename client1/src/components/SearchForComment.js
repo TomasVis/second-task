@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-import {
-	Paper,
-	TextField,
-	Button,
-	Grid
-} from "@material-ui/core";
+import { Paper, TextField, Button, Grid, Typography } from "@material-ui/core";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -21,6 +16,9 @@ export class SearchForComment extends Component {
 		const { values, handleChange, handleDateChange, style } = this.props;
 		return (
 			<Paper style={style}>
+				<Typography variant="h5" component="h2">
+					Paieška
+				</Typography>
 				<TextField
 					placeholder="Pagal tekstą"
 					onChange={handleChange("searchText")}
