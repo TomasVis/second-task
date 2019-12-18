@@ -1,76 +1,54 @@
-import React, { Component } from 'react'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import {List, ListItem} from 'material-ui/List';
-import RaisedButton from 'material-ui/RaisedButton';
+import React, { Component } from "react";
+import { List, ListItem, Paper, Button, ListItemText  } from "@material-ui/core";
 
 
-export class FormUserDetails extends Component {
-
-restart =  e => {
+export class Confirm extends Component {
+	restart = e => {
 		e.preventDefault();
-		//PROCESS FORM //
 		this.props.changeStep();
+	};
 
-	}
+	//Formats Date object to YYYY-MM-DD format
+	format = date => {
+		var d = date.getDate();
+		var m = date.getMonth() + 1;
+		var y = date.getFullYear();
+		return (
+			"" + y + "-" + (m <= 9 ? "0" + m : m) + "-" + (d <= 9 ? "0" + d : d)
+		);
+	};
 
-
-
-
-
-	render(){
-		const {values:{firstName,lastName,email,
-			ocupation, city, bio} }  = this.props;
-		return(
-			<MuiThemeProvider>
-				<React.Fragment>
-					<AppBar title="Komentaras išsaugotas" />
-					<List>
-						<ListItem
-							primaryText="First Name"
-							secondaryText = {firstName}
-						/>
-						<ListItem
-							primaryText="Last Name"
-							secondaryText = {lastName}
-						/>
-						<ListItem
-							primaryText="Email"
-							secondaryText = {email}
-						/>
-						<ListItem
-							primaryText="Ocupation"
-							secondaryText = {ocupation}
-						/>
-						<ListItem
-							primaryText="City"
-							secondaryText = {city}
-						/>
-						<ListItem
-							primaryText="Bio"
-							secondaryText = {bio}
-						/>
-					</List>
-					<br/>
-
-					<RaisedButton
-						label="Confirm & Continue"
-						primary={true}
-						style={styles.button}
-						onClick={this.restart}
-					/>
-
-				</React.Fragment>
-			</MuiThemeProvider>
-
-
-		)
-	}
-}
-const styles = {
-	button:{
-		margin:15
+	render() {
+		const {
+			values: { name, email, date, comment }
+		} = this.props;
+		return (
+			<Paper style={this.props.style}>
+				<List>
+					<ListItem>
+						<ListItemText primary={name} />
+					</ListItem>
+					<ListItem>
+						<ListItemText secondary={email} />
+					</ListItem>
+					<ListItem>
+						<ListItemText secondary={this.format(date)} />
+					</ListItem>
+					<ListItem>
+						<ListItemText primary={comment} />
+					</ListItem>
+				</List>
+				<br />
+				<Button
+					variant="contained"
+					color="primary"
+					onClick={this.restart}
+				>
+					Rašyti naują komentarą
+				</Button>
+			</Paper>
+		);
 	}
 }
 
-export default FormUserDetails
+export default Confirm;

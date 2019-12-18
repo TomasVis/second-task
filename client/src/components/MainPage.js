@@ -3,11 +3,6 @@ import CommentForm from "./CommentForm";
 import Confirm from "./Confirm";
 import SearchForComment from "./SearchForComment";
 import SearchResults from "./SearchResults";
-import MaterialUIPickers from "./MaterialUIPickers.js";
-/*import FormUserDetails from './FormUserDetails'
-import FormPersonalDetails from './FormPersonalDetails'
-import Confirm from './Confirm'
-import Success from './Success'*/
 
 export class MainPage extends Component {
 	state = {
@@ -16,36 +11,14 @@ export class MainPage extends Component {
 		controlSearch: true,
 		name: "",
 		email: "",
-		date: new Date(
-			new Date().getFullYear(),
-			new Date().getMonth(),
-			new Date().getDate()
-		),
+		date: new Date(),
 		comment: "",
 		searchText: "",
-		searchDate: ""
+		searchDateFrom: null,
+		searchDateTo: null
 	};
-	/*	  componentDidMount() {
 
-      // Call our fetch function below once the component mounts
-    this.callBackendAPI()
-      .then(res => this.setState({ data: res.body }))
-      .catch(err => console.log(err));
-  }
-    // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
-  callBackendAPI = async () => {
-    const response = await fetch('/feedbacks');
-    const body = await response.json();
-
-    if (response.status !== 200) {
-      throw Error(body.message) 
-    }
-    return body;
-  };
-
-*/
-
-	//Go back to previous step
+	//Controler for coment form and confirmation
 	changeStep = () => {
 		const { step } = this.state;
 		step
@@ -60,6 +33,7 @@ export class MainPage extends Component {
 					comment: ""
 			  });
 	};
+	//Controler for search form and search results
 	changeSearch = () => {
 		const { controlSearch } = this.state;
 		controlSearch
@@ -69,7 +43,9 @@ export class MainPage extends Component {
 			: this.setState({
 					controlSearch: !controlSearch,
 					searchText: "",
-					searchDate: ""
+					searchDateFrom: null,
+					searchDateTo: null,
+					data:null
 			  });
 	};
 	handleData = e => {
@@ -81,34 +57,41 @@ export class MainPage extends Component {
 	handleChange = input => e => {
 		this.setState({ [input]: e.target.value });
 	};
+	//different than handleChange because date picker event does not have target
+	handleDateChange = input => e => {
+		this.setState({ [input]: e });
+	};
 
 	render() {
-		//console.log(this.state.data)
-		const { step, controlSearch } = this.state;
 		const {
+			step,
+			controlSearch,
 			name,
 			email,
 			date,
 			comment,
 			searchText,
-			searchDate,
+			searchDateFrom,
+			searchDateTo,
 			data
 		} = this.state;
 		const values = { name, email, date, comment };
-		const SearchValues = { searchText, searchDate };
-		const searchData = data;
+		const SearchValues = { searchText, searchDateFrom, searchDateTo };
+
 		return (
-			<div>
-				{/*			<p className="App-intro">{this.state.data !== null ? this.state.data.map(el => el.values.name):null}</p>*/}
-				<MaterialUIPickers />
+			<div style={{display:"flex",
+			flexDirection:"column",alignItems:"center"}}>
 				{step ? (
 					<CommentForm
+						style={styles.paper}
 						changeStep={this.changeStep}
 						handleChange={this.handleChange}
+						handleDateChange={this.handleDateChange}
 						values={values}
 					/>
 				) : (
 					<Confirm
+						style={styles.paper}
 						changeStep={this.changeStep}
 						handleChange={this.handleChange}
 						values={values}
@@ -116,8 +99,10 @@ export class MainPage extends Component {
 				)}
 				{controlSearch ? (
 					<SearchForComment
+						style={styles.paper}
 						changeSearch={this.changeSearch}
 						handleChange={this.handleChange}
+						handleDateChange={this.handleDateChange}
 						values={SearchValues}
 					/>
 				) : (
@@ -126,7 +111,7 @@ export class MainPage extends Component {
 						handleData={this.handleData}
 						handleChange={this.handleChange}
 						values={SearchValues}
-						data={searchData}
+						data={data}
 					/>
 				)}
 			</div>
@@ -136,39 +121,12 @@ export class MainPage extends Component {
 
 export default MainPage;
 
-/*
-		switch(step){
-			case 1 :
-				return(
-					<FormUserDetails
-						nextStep={this.nextStep}
-						handleChange={this.handleChange}
-						values={values}
-					/>
-				)
-			case 2 :
-				return(
-					<FormPersonalDetails
-						nextStep={this.nextStep}
-						prevStep={this.previousStep}
-						handleChange={this.handleChange}
-						values={values}
-					/>
-				)
-			case 3 :
-				return(
-					<Confirm
-						nextStep={this.nextStep}
-						prevStep={this.previousStep}
-						values={values}
-					/>
-				)
-			case 4 :
-				return <Success/>
+const styles = {
+	paper: {
+		margin: 15,
+		display: "flex",
+		flexDirection: "column",
+		width: "250px"
+	}
+};
 
-
-
-
-
-		}
-*/
